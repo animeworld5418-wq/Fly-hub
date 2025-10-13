@@ -1,147 +1,226 @@
--- Devil Neon Fly Hub GUI Script (Bright Error Popup)
+--// Devil Neon Fly Hub GUI Script v3 (with Error Popup) //--
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+-- Remove existing (prevents duplicates while testing)
+if playerGui:FindFirstChild("DevilNeonFlyHub") then
+	playerGui:FindFirstChild("DevilNeonFlyHub"):Destroy()
+end
+
+-- Create ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "DevilNeonFlyHub"
 ScreenGui.Parent = playerGui
 ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 -- Main Frame
 local Frame = Instance.new("Frame")
 Frame.Parent = ScreenGui
-Frame.Size = UDim2.new(0, 340, 0, 240)
-Frame.Position = UDim2.new(0.5, -170, 0.5, -120)
-Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+Frame.Size = UDim2.new(0, 360, 0, 240)
+Frame.Position = UDim2.new(0.5, -180, 0.5, -120)
+Frame.BackgroundColor3 = Color3.fromRGB(18, 18, 28)
 Frame.BorderSizePixel = 0
 Frame.Active = true
 Frame.Draggable = true
+Frame.ClipsDescendants = true
 
-local Gradient = Instance.new("UIGradient")
-Gradient.Color = ColorSequence.new{
+-- Neon Outer Glow (UIStroke)
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = Frame
+Stroke.Thickness = 3
+Stroke.Transparency = 0
+Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+Stroke.Color = Color3.fromRGB(255, 0, 120)
+
+-- Gradient for frame
+local FrameGradient = Instance.new("UIGradient")
+FrameGradient.Color = ColorSequence.new{
 	ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 120)),
+	ColorSequenceKeypoint.new(0.6, Color3.fromRGB(30, 25, 60)),
 	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 255))
 }
-Gradient.Rotation = 45
-Gradient.Parent = Frame
+FrameGradient.Rotation = 220
+FrameGradient.Parent = Frame
 
 -- Title Bar
 local TitleBar = Instance.new("Frame")
 TitleBar.Parent = Frame
 TitleBar.Size = UDim2.new(1, 0, 0, 44)
-TitleBar.BackgroundColor3 = Color3.fromRGB(40, 0, 60)
-TitleBar.BorderSizePixel = 0
+TitleBar.Position = UDim2.new(0, 0, 0, 0)
+TitleBar.BackgroundTransparency = 1
 
 local Title = Instance.new("TextLabel")
 Title.Parent = TitleBar
-Title.Size = UDim2.new(1, -44, 1, 0)
+Title.Size = UDim2.new(1, -48, 1, 0)
 Title.Position = UDim2.new(0, 12, 0, 0)
 Title.BackgroundTransparency = 1
 Title.Text = "💀 Devil Neon Fly Hub 💀"
 Title.Font = Enum.Font.GothamBold
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 20
+Title.TextColor3 = Color3.fromRGB(255,255,255)
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
+-- Close button
 local CloseButton = Instance.new("TextButton")
 CloseButton.Parent = TitleBar
-CloseButton.Size = UDim2.new(0, 40, 1, 0)
-CloseButton.Position = UDim2.new(1, -44, 0, 0)
-CloseButton.BackgroundColor3 = Color3.fromRGB(200, 40, 40)
-CloseButton.Text = "X"
-CloseButton.Font = Enum.Font.GothamBold
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.TextSize = 20
+CloseButton.Size = UDim2.new(0, 36, 0, 36)
+CloseButton.Position = UDim2.new(1, -44, 0, 4)
+CloseButton.BackgroundColor3 = Color3.fromRGB(220,50,50)
 CloseButton.BorderSizePixel = 0
-CloseButton.MouseEnter:Connect(function() CloseButton.BackgroundColor3 = Color3.fromRGB(230, 80, 80) end)
-CloseButton.MouseLeave:Connect(function() CloseButton.BackgroundColor3 = Color3.fromRGB(200, 40, 40) end)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.Text = "X"
+CloseButton.TextSize = 18
+CloseButton.TextColor3 = Color3.fromRGB(255,255,255)
+CloseButton.AutoButtonColor = false
+CloseButton.MouseEnter:Connect(function() CloseButton.BackgroundColor3 = Color3.fromRGB(255,100,100) end)
+CloseButton.MouseLeave:Connect(function() CloseButton.BackgroundColor3 = Color3.fromRGB(220,50,50) end)
 CloseButton.MouseButton1Click:Connect(function()
 	ScreenGui:Destroy()
 end)
 
+-- Main content area (for buttons)
+local Content = Instance.new("Frame")
+Content.Parent = Frame
+Content.Size = UDim2.new(1, -24, 1, -64)
+Content.Position = UDim2.new(0, 12, 0, 52)
+Content.BackgroundTransparency = 1
+
 -- Floor Button
 local FloorButton = Instance.new("TextButton")
-FloorButton.Parent = Frame
+FloorButton.Parent = Content
 FloorButton.Size = UDim2.new(0, 150, 0, 48)
-FloorButton.Position = UDim2.new(0.5, -75, 0.55, -24)
+FloorButton.Position = UDim2.new(0.5, -75, 0, 0)
 FloorButton.BackgroundColor3 = Color3.fromRGB(255, 0, 120)
+FloorButton.BorderSizePixel = 0
 FloorButton.Font = Enum.Font.GothamSemibold
 FloorButton.Text = "Floor"
-FloorButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 FloorButton.TextSize = 18
-FloorButton.BorderSizePixel = 0
+FloorButton.TextColor3 = Color3.fromRGB(255,255,255)
+FloorButton.AutoButtonColor = false
 
--- Popup Function
-local function showErrorPopup(message)
-	local Overlay = Instance.new("Frame")
-	Overlay.Parent = ScreenGui
-	Overlay.AnchorPoint = Vector2.new(0.5, 0.5)
-	Overlay.Size = UDim2.new(1, 0, 1, 0)
-	Overlay.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	Overlay.BackgroundTransparency = 0.4
-	Overlay.ZIndex = 10
+local btnGrad = Instance.new("UIGradient")
+btnGrad.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 50, 160)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 255))
+}
+btnGrad.Rotation = 45
+btnGrad.Parent = FloorButton
 
+FloorButton.MouseEnter:Connect(function()
+	local t = TweenService:Create(FloorButton, TweenInfo.new(0.18), {Size = UDim2.new(0, 160, 0, 52)})
+	t:Play()
+end)
+FloorButton.MouseLeave:Connect(function()
+	local t = TweenService:Create(FloorButton, TweenInfo.new(0.18), {Size = UDim2.new(0, 150, 0, 48)})
+	t:Play()
+end)
+
+-- Helper: create modal error popup
+local function showErrorPopup()
+	-- If an error popup already exists, remove it first
+	if ScreenGui:FindFirstChild("DevilErrorPopup") then
+		ScreenGui:FindFirstChild("DevilErrorPopup"):Destroy()
+	end
+
+	local PopupGui = Instance.new("Frame")
+	PopupGui.Name = "DevilErrorPopup"
+	PopupGui.Parent = ScreenGui
+	PopupGui.Size = UDim2.new(1, 0, 1, 0)
+	PopupGui.Position = UDim2.new(0, 0, 0, 0)
+	PopupGui.BackgroundTransparency = 0.5
+	PopupGui.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	PopupGui.ZIndex = 50
+	PopupGui.ClipsDescendants = true
+
+	-- Modal box
 	local Modal = Instance.new("Frame")
-	Modal.Parent = Overlay
-	Modal.Size = UDim2.new(0, 420, 0, 180)
-	Modal.Position = UDim2.new(0.5, -210, 0.5, -90)
-	Modal.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+	Modal.Parent = PopupGui
+	Modal.Size = UDim2.new(0, 420, 0, 160)
+	Modal.Position = UDim2.new(0.5, -210, 0.5, -80)
+	Modal.BackgroundColor3 = Color3.fromRGB(28, 12, 20)
 	Modal.BorderSizePixel = 0
-	Modal.ZIndex = 11
+	Modal.ZIndex = 51
 
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 10)
-	corner.Parent = Modal
+	local modalStroke = Instance.new("UIStroke")
+	modalStroke.Parent = Modal
+	modalStroke.Color = Color3.fromRGB(255, 0, 120)
+	modalStroke.Thickness = 2
 
-	local glow = Instance.new("UIStroke")
-	glow.Color = Color3.fromRGB(255, 40, 40)
-	glow.Thickness = 2
-	glow.Parent = Modal
+	local modalGrad = Instance.new("UIGradient")
+	modalGrad.Parent = Modal
+	modalGrad.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 120)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(30, 20, 60))
+	}
 
-	local Header = Instance.new("TextLabel")
-	Header.Parent = Modal
-	Header.Size = UDim2.new(1, 0, 0, 40)
-	Header.BackgroundTransparency = 1
-	Header.Text = "⚠️ ERROR ⚠️"
-	Header.Font = Enum.Font.GothamBold
-	Header.TextColor3 = Color3.fromRGB(255, 80, 80)
-	Header.TextSize = 22
-	Header.ZIndex = 12
+	-- Title label
+	local ErrTitle = Instance.new("TextLabel")
+	ErrTitle.Parent = Modal
+	ErrTitle.Size = UDim2.new(1, -20, 0, 36)
+	ErrTitle.Position = UDim2.new(0, 10, 0, 8)
+	ErrTitle.BackgroundTransparency = 1
+	ErrTitle.Text = "Error"
+	ErrTitle.Font = Enum.Font.GothamBold
+	ErrTitle.TextSize = 20
+	ErrTitle.TextColor3 = Color3.fromRGB(255,255,255)
+	ErrTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-	local Msg = Instance.new("TextLabel")
-	Msg.Parent = Modal
-	Msg.Size = UDim2.new(1, -40, 0, 80)
-	Msg.Position = UDim2.new(0, 20, 0, 50)
-	Msg.BackgroundTransparency = 1
-	Msg.Font = Enum.Font.GothamSemibold
-	Msg.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Msg.TextSize = 16
-	Msg.TextWrapped = true
-	Msg.Text = message
-	Msg.ZIndex = 12
+	-- Message label (exact text requested)
+	local ErrMsg = Instance.new("TextLabel")
+	ErrMsg.Parent = Modal
+	ErrMsg.Size = UDim2.new(1, -20, 1, -80)
+	ErrMsg.Position = UDim2.new(0, 10, 0, 46)
+	ErrMsg.BackgroundTransparency = 1
+	ErrMsg.TextWrapped = true
+	ErrMsg.Text = 'Error : This Script Cannot Not Run In This Executor.\n"You need Devil Neon executor to use this script"'
+	ErrMsg.Font = Enum.Font.Gotham
+	ErrMsg.TextSize = 16
+	ErrMsg.TextColor3 = Color3.fromRGB(255,220,220)
+	ErrMsg.TextXAlignment = Enum.TextXAlignment.Left
+	ErrMsg.TextYAlignment = Enum.TextYAlignment.Top
 
-	local OkBtn = Instance.new("TextButton")
-	OkBtn.Parent = Modal
-	OkBtn.Size = UDim2.new(0, 100, 0, 36)
-	OkBtn.Position = UDim2.new(0.5, -50, 1, -50)
-	OkBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 80)
-	OkBtn.Text = "OK"
-	OkBtn.Font = Enum.Font.GothamBold
-	OkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	OkBtn.TextSize = 18
-	OkBtn.BorderSizePixel = 0
-	OkBtn.ZIndex = 12
+	-- OK button
+	local OK = Instance.new("TextButton")
+	OK.Parent = Modal
+	OK.Size = UDim2.new(0, 90, 0, 34)
+	OK.Position = UDim2.new(1, -100, 1, -46)
+	OK.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+	OK.BorderSizePixel = 0
+	OK.Font = Enum.Font.GothamBold
+	OK.Text = "OK"
+	OK.TextSize = 16
+	OK.TextColor3 = Color3.fromRGB(255,255,255)
+	OK.ZIndex = 52
+	OK.AutoButtonColor = false
 
-	OkBtn.MouseEnter:Connect(function() OkBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 120) end)
-	OkBtn.MouseLeave:Connect(function() OkBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 80) end)
-	OkBtn.MouseButton1Click:Connect(function() Overlay:Destroy() end)
+	OK.MouseEnter:Connect(function() OK.BackgroundColor3 = Color3.fromRGB(255,100,100) end)
+	OK.MouseLeave:Connect(function() OK.BackgroundColor3 = Color3.fromRGB(220,50,50) end)
+
+	OK.MouseButton1Click:Connect(function()
+		-- animate fade out
+		local tw = TweenService:Create(PopupGui, TweenInfo.new(0.18), {BackgroundTransparency = 1})
+		tw:Play()
+		tw.Completed:Wait()
+		PopupGui:Destroy()
+	end)
+
+	-- Close on background click (optional)
+	PopupGui.MouseButton1Down:Connect(function()
+		-- do nothing so clicks outside don't close unintentionally
+	end)
+
+	-- Small appear tween
+	Modal.Size = UDim2.new(0, 0, 0, 0)
+	local tween = TweenService:Create(Modal, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 420, 0, 160)})
+	tween:Play()
 end
 
--- When Floor button is clicked
+-- FloorButton click now shows the error popup
 FloorButton.MouseButton1Click:Connect(function()
-	local message = "Errors : This Script Could not run In this Exercise. You need Devil Neon executor"
-	showErrorPopup(message)
+	-- show the modal error instead of running the script
+	showErrorPopup()
 end)
