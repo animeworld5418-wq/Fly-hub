@@ -1,0 +1,174 @@
+--// DEVIL NEON WALL HACK SCRIPT — KEY SYSTEM + LAUNCH (BY DEVIL CODER PRO+)
+-- Place in StarterPlayerScripts as a LocalScript
+
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local Player = game.Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-------------------------------------------------
+-- VALID KEYS (50 STRONG, SINGLE USE)
+-------------------------------------------------
+local validKeys = {
+    "D3v!lN7xP#9Q2rTs", "H3xL@pK2#s8nWq9", "Fz8!kVr1#YpL6mN",
+    "U0r!TqX5#eK9vA3", "Zy7!BvD2#QjP6tM", "Lk9!rH8#oE1nS4p",
+    "Tt4!bY5#M8qF1vX", "Oa2!mV9#N5lQ7uE", "Wn6!xG3#cT2sL8z",
+    "Rr9!uJ1#pY7mD5a", "Eo5!jQ8#lB6nT3v", "N1m!K2#sW5zX8pL",
+    "A8!hR4#qP9jD2yN", "G6!fV1#bT3nW7oM", "S3!pY9#kE5qJ2xR",
+    "J2!vM8#tB6qP4wH", "C9!xN3#lT5mR7yQ", "B7!zF1#dE2gH4uK",
+    "I4!rW5#xU7vN2tE", "P5!mJ9#bO1nY3qS", "M2!vX7#pT4lA9hC",
+    "K9!eD3#yB8qH6jV", "L8!wG1#pS9mC2tN", "Q3!fY6#bJ2kL7nX",
+    "R5!tM9#cO4pA8vZ", "S7!yH2#kT5qG9xF", "V1!nL8#rD6mE3pJ",
+    "X6!mQ4#yW9nS7kU", "Y8!rB3#jL5hT2vP", "Z9!cE1#pF6qR4xK",
+    "N7!uJ2#lD5nG3tY", "H3!rX6#bS9qA8pE", "T4!mV7#yK1lP5xZ",
+    "E2!fN8#qC9vH4bL", "O9!kD1#xR6mY3tJ", "U6!jF2#zS7pB5nV",
+    "G5!hL9#rT8wC1yQ", "D8!pK3#bV6fM7xR", "A4!cN1#tL9jQ2vE",
+    "M3!wY5#rS8hT6kJ", "F2!nJ9#xP7vE4mL", "K8!rC1#tB5yH9qN",
+    "L5!zX3#sD7jP2vT", "P9!nM8#rE6qC1yV", "C7!lF4#pT2hG9xA",
+    "R8!mW6#qK3vN5tJ", "S2!pH7#yB9nD4xZ", "V9!eT5#kR1qG8mP",
+    "X1!jN4#rS6tL3vQ", "Y7!cP8#bK2wD9xU", "Z5!fJ3#pV7nQ1yE"
+}
+
+local usedKeys = {}
+
+-------------------------------------------------
+-- CREATE SCREEN GUI
+-------------------------------------------------
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DevilKeySystem"
+screenGui.Parent = PlayerGui
+screenGui.ResetOnSpawn = false
+
+-------------------------------------------------
+-- KEY INPUT FRAME
+-------------------------------------------------
+local keyFrame = Instance.new("Frame")
+keyFrame.Size = UDim2.new(0, 420, 0, 220)
+keyFrame.Position = UDim2.new(0.5, -210, 0.5, -110)
+keyFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+keyFrame.BorderSizePixel = 0
+keyFrame.Parent = screenGui
+Instance.new("UICorner", keyFrame).CornerRadius = UDim.new(0, 12)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Position = UDim2.new(0, 0, 0, 8)
+title.BackgroundTransparency = 1
+title.Text = "DEVIL NEON WALL HACK SCRIPT"
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.TextColor3 = Color3.new(1,1,1)
+title.Parent = keyFrame
+
+local keyBox = Instance.new("TextBox")
+keyBox.Size = UDim2.new(0.86, 0, 0, 48)
+keyBox.Position = UDim2.new(0.07, 0, 0.35, 0)
+keyBox.PlaceholderText = "Paste your access key here..."
+keyBox.Text = ""
+keyBox.Font = Enum.Font.Gotham
+keyBox.TextScaled = true
+keyBox.TextColor3 = Color3.new(1,1,1)
+keyBox.BackgroundColor3 = Color3.fromRGB(32,32,32)
+keyBox.Parent = keyFrame
+Instance.new("UICorner", keyBox).CornerRadius = UDim.new(0, 10)
+
+local submitButton = Instance.new("TextButton")
+submitButton.Size = UDim2.new(0.5, 0, 0, 44)
+submitButton.Position = UDim2.new(0.25, 0, 0.74, 0)
+submitButton.Text = "SUBMIT KEY"
+submitButton.Font = Enum.Font.GothamBold
+submitButton.TextScaled = true
+submitButton.TextColor3 = Color3.new(1,1,1)
+submitButton.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+submitButton.Parent = keyFrame
+Instance.new("UICorner", submitButton).CornerRadius = UDim.new(0, 10)
+
+-------------------------------------------------
+-- POPUP FUNCTION
+-------------------------------------------------
+local function showPopup(text, color)
+	local popup = Instance.new("Frame")
+	popup.Size = UDim2.new(0, 360, 0, 60)
+	popup.Position = UDim2.new(0.5, -180, 0.72, 0)
+	popup.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+	popup.BorderSizePixel = 0
+	popup.Parent = screenGui
+	Instance.new("UICorner", popup).CornerRadius = UDim.new(0, 10)
+
+	local lbl = Instance.new("TextLabel")
+	lbl.Size = UDim2.new(1, -20, 1, -10)
+	lbl.Position = UDim2.new(0, 10, 0, 5)
+	lbl.BackgroundTransparency = 1
+	lbl.Text = text
+	lbl.TextColor3 = color or Color3.new(1,1,1)
+	lbl.Font = Enum.Font.GothamBold
+	lbl.TextScaled = true
+	lbl.Parent = popup
+
+	TweenService:Create(popup, TweenInfo.new(0.35), {BackgroundTransparency = 0.0}):Play()
+	task.wait(1.4)
+	TweenService:Create(popup, TweenInfo.new(0.45), {BackgroundTransparency = 1, Size = UDim2.new(0, 0, 0, 0)}):Play()
+	task.wait(0.45)
+	popup:Destroy()
+end
+
+-------------------------------------------------
+-- HANDLE SUBMISSION
+-------------------------------------------------
+submitButton.MouseButton1Click:Connect(function()
+	local key = tostring(keyBox.Text or ""):gsub("^%s*(.-)%s*$", "%1") -- trim
+	if key == "" then
+		showPopup("Enter a key to continue", Color3.fromRGB(255,200,50))
+		return
+	end
+
+	-- Already used?
+	if usedKeys[key] then
+		showPopup("❌ Key Invalid (already used)", Color3.fromRGB(255,80,80))
+		keyBox.Text = ""
+		return
+	end
+
+	-- Check against validKeys list
+	if table.find(validKeys, key) then
+		usedKeys[key] = true
+		showPopup("✅ Key accepted — unlocking...", Color3.fromRGB(120,255,140))
+		task.wait(0.8)
+		keyFrame:Destroy()
+
+		-- === LOAD YOUR REMOTE SCRIPT (user-provided URL) ===
+		local remoteUrl = "https://raw.githubusercontent.com/animeworld5418-wq/Fly-hub/545ff9a417be8f9f9f50258d288db60ebe3aa81f/Wall%20Hack"
+		local ok, result = pcall(function()
+			local response = game:HttpGet(remoteUrl)
+			return loadstring(response)()
+		end)
+
+		if not ok then
+			-- show error popup
+			showPopup("Failed to load remote script. See Output for details.", Color3.fromRGB(255,100,100))
+			warn("DevilNeonUI: Failed to load remote script:", result)
+		end
+
+	else
+		showPopup("❌ Key Invalid", Color3.fromRGB(255,80,80))
+		keyBox.Text = ""
+	end
+end)
+
+-- Also allow pressing Return to submit
+keyBox.FocusLost:Connect(function(enter)
+	if enter then
+		submitButton.MouseButton1Click:Fire()
+	end
+end)
+
+-- Optional: print remaining valid keys count for you (developer) in Output
+local function countRemaining()
+	local c = 0
+	for _, k in ipairs(validKeys) do
+		if not usedKeys[k] then c = c + 1 end
+	end
+	return c
+end
+
+print(("DevilNeonUI: %d valid keys available. Use one to unlock."):format(countRemaining()))
