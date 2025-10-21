@@ -1,0 +1,219 @@
+--// DEVIL NEON WALL HACK SCRIPT V2 (BY DEVIL CODER PRO+)
+
+local TweenService = game:GetService("TweenService")
+local Player = game.Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DevilNeonUI"
+screenGui.Parent = PlayerGui
+screenGui.ResetOnSpawn = false
+
+-------------------------------------------------
+-- LOADING SCREEN
+-------------------------------------------------
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0, 400, 0, 150)
+loadingFrame.Position = UDim2.new(0.5, -200, 0.5, -75)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+loadingFrame.BorderSizePixel = 0
+loadingFrame.Parent = screenGui
+Instance.new("UICorner", loadingFrame).CornerRadius = UDim.new(0, 12)
+
+local glow = Instance.new("UIStroke")
+glow.Parent = loadingFrame
+glow.Thickness = 3
+glow.Color = Color3.fromRGB(255, 0, 255)
+
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1, 0, 0, 50)
+loadingText.Position = UDim2.new(0, 0, 0.2, 0)
+loadingText.BackgroundTransparency = 1
+loadingText.Text = "BOOTING DEVIL NEON WALL HACK SCRIPT..."
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadingText.TextScaled = true
+loadingText.Font = Enum.Font.GothamBold
+loadingText.Parent = loadingFrame
+
+local loadingBarBG = Instance.new("Frame")
+loadingBarBG.Size = UDim2.new(0.9, 0, 0, 20)
+loadingBarBG.Position = UDim2.new(0.05, 0, 0.65, 0)
+loadingBarBG.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+loadingBarBG.Parent = loadingFrame
+Instance.new("UICorner", loadingBarBG).CornerRadius = UDim.new(1, 0)
+
+local loadingBar = Instance.new("Frame")
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+loadingBar.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+loadingBar.Parent = loadingBarBG
+Instance.new("UICorner", loadingBar).CornerRadius = UDim.new(1, 0)
+
+-- Startup Sound
+local startupSound = Instance.new("Sound", PlayerGui)
+startupSound.SoundId = "rbxassetid://1837467337" -- futuristic hum
+startupSound.Volume = 1
+startupSound:Play()
+
+-- Animate loading
+for i = 1, 100 do
+	loadingBar:TweenSize(UDim2.new(i/100, 0, 1, 0), "Out", "Quad", 0.02, true)
+	task.wait(0.02)
+end
+
+-- Fade out loading
+TweenService:Create(loadingFrame, TweenInfo.new(1, Enum.EasingStyle.Quad), {BackgroundTransparency = 1}):Play()
+TweenService:Create(loadingText, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(loadingBarBG, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(loadingBar, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+task.wait(1.2)
+loadingFrame:Destroy()
+
+-------------------------------------------------
+-- MAIN FRAME
+-------------------------------------------------
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 350, 0, 180)
+mainFrame.Position = UDim2.new(0.5, -175, 0.5, -90)
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+mainFrame.BackgroundTransparency = 0.25
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 12)
+
+-- Background Image
+local bgImage = Instance.new("ImageLabel")
+bgImage.Size = UDim2.new(1, 0, 1, 0)
+bgImage.BackgroundTransparency = 1
+bgImage.Image = "rbxassetid://14393969687" -- neon texture
+bgImage.ImageTransparency = 0.15
+bgImage.ScaleType = Enum.ScaleType.Crop
+bgImage.Parent = mainFrame
+
+-- Neon Glow Border
+local border = Instance.new("UIStroke")
+border.Thickness = 3
+border.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+border.Parent = mainFrame
+
+task.spawn(function()
+	while task.wait(0.03) do
+		for hue = 0, 255, 4 do
+			border.Color = Color3.fromHSV(hue/255, 1, 1)
+			task.wait(0.02)
+		end
+	end
+end)
+
+-- RAINBOW TITLE
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -40, 0, 40)
+title.Position = UDim2.new(0, 10, 0, 5)
+title.BackgroundTransparency = 1
+title.Text = "DEVIL NEON WALL HACK SCRIPT"
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+title.Parent = mainFrame
+
+task.spawn(function()
+	while task.wait(0.05) do
+		for hue = 0, 255, 4 do
+			title.TextColor3 = Color3.fromHSV(hue/255, 1, 1)
+			task.wait(0.03)
+		end
+	end
+end)
+
+-- CLOSE BUTTON
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.new(1,1,1)
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextScaled = true
+closeButton.Parent = mainFrame
+Instance.new("UICorner", closeButton).CornerRadius = UDim.new(1,0)
+closeButton.MouseButton1Click:Connect(function() screenGui:Destroy() end)
+
+-------------------------------------------------
+-- BUTTONS
+-------------------------------------------------
+local onButton = Instance.new("TextButton")
+onButton.Size = UDim2.new(0, 100, 0, 45)
+onButton.Position = UDim2.new(0.2, 0, 0.65, 0)
+onButton.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
+onButton.Text = "ON"
+onButton.TextColor3 = Color3.new(1,1,1)
+onButton.Font = Enum.Font.GothamBold
+onButton.TextScaled = true
+onButton.Parent = mainFrame
+Instance.new("UICorner", onButton).CornerRadius = UDim.new(0, 8)
+
+local offButton = Instance.new("TextButton")
+offButton.Size = UDim2.new(0, 100, 0, 45)
+offButton.Position = UDim2.new(0.55, 0, 0.65, 0)
+offButton.BackgroundColor3 = Color3.fromRGB(255, 70, 70)
+offButton.Text = "OFF"
+offButton.TextColor3 = Color3.new(1,1,1)
+offButton.Font = Enum.Font.GothamBold
+offButton.TextScaled = true
+offButton.Parent = mainFrame
+Instance.new("UICorner", offButton).CornerRadius = UDim.new(0, 8)
+
+-------------------------------------------------
+-- NOTIFICATION FUNCTION
+-------------------------------------------------
+local function Notify(text)
+	local note = Instance.new("TextLabel")
+	note.Size = UDim2.new(0, 260, 0, 50)
+	note.Position = UDim2.new(0.5, -130, 0.1, 0)
+	note.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	note.BackgroundTransparency = 0.3
+	note.Text = text
+	note.TextColor3 = Color3.new(1,1,1)
+	note.TextScaled = true
+	note.Font = Enum.Font.GothamBold
+	note.Parent = screenGui
+	Instance.new("UICorner", note).CornerRadius = UDim.new(0, 12)
+	TweenService:Create(note, TweenInfo.new(0.5), {BackgroundTransparency = 0.1}):Play()
+	task.wait(1.2)
+	TweenService:Create(note, TweenInfo.new(0.6), {BackgroundTransparency = 1, TextTransparency = 1}):Play()
+	task.wait(0.6)
+	note:Destroy()
+end
+
+-------------------------------------------------
+-- WALL HACK + SOUND
+-------------------------------------------------
+local soundOn = Instance.new("Sound", PlayerGui)
+soundOn.SoundId = "rbxassetid://1843400625" -- power on
+soundOn.Volume = 1
+
+local soundOff = Instance.new("Sound", PlayerGui)
+soundOff.SoundId = "rbxassetid://9118823106" -- power off
+soundOff.Volume = 1
+
+local function setCollision(state)
+	for _, part in ipairs(Player.Character:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.CanCollide = state
+		end
+	end
+end
+
+onButton.MouseButton1Click:Connect(function()
+	setCollision(false)
+	soundOn:Play()
+	Notify("⚡ WALL HACK ENABLED ⚡")
+end)
+
+offButton.MouseButton1Click:Connect(function()
+	setCollision(true)
+	soundOff:Play()
+	Notify("🚫 WALL HACK DISABLED 🚫")
+end)
